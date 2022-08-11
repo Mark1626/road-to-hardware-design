@@ -1,0 +1,28 @@
+# Chapter 1: FPGA Basic Experiments in Verilog
+
+1. **hello** Basic hello `iverilog`
+- **counter** 8 bit counter
+- **arbiter**
+
+## iverilog
+
+https://steveicarus.github.io/iverilog/index.html
+
+`iverilog` is a verilog compiler. It generates code that can be used by backend tools
+
+`vvp` is a simulation runtime engine 
+
+## gtkwave
+
+`gtkwave` is a wave viewer based on GTK+, Verilog VCD files are loaded in `gtkwave` to analyse the waveform of the design
+
+## Other tips
+
+> **Timing Diagram in MarkDown:**  
+  Inline plantuml timing diagram can be created with  
+  \<\!-- @startuml timing-diagram.png --\>  
+  And the timing diagram can be created with plantuml \<file\>.md
+
+
+
+
