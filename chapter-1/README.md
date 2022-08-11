@@ -4,7 +4,9 @@
 2. **counter** 8 bit counter
 3. **arbiter** Aribiter
 
-## iverilog
+## Tools
+
+### iverilog
 
 https://steveicarus.github.io/iverilog/index.html
 
@@ -12,9 +14,21 @@ https://steveicarus.github.io/iverilog/index.html
 
 `vvp` is a simulation runtime engine 
 
-## gtkwave
+### gtkwave
 
 `gtkwave` is a wave viewer based on GTK+, Verilog VCD files are loaded in `gtkwave` to analyse the waveform of the design
+
+-----------------------------------------------------------------------------
+
+## Verilog
+
+1. Difference between `assign`, `<=` and `=`
+
+   - `<=` is non blocking and is performed on pos edge
+   - `assign =` continual assignment to wire, it has to be outside `always`
+   - `=` is blocking assignment, inside `always`
+
+-----------------------------------------------------------------------------
 
 ## Other tips
 

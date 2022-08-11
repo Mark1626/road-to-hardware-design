@@ -1,5 +1,7 @@
 *.vcd
 
-hello
-tarbiter
-counter
+hello/hello
+arbiter/tarbiter
+counter/tcounter
+adder/bench/tadder
+
