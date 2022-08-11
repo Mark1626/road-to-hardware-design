@@ -2,11 +2,10 @@
 
 In 2021 I started a repo to document my journey into HPC in [road-to-plus-plus](https://github.com/Mark1626/road-to-plus-plus). This repo is focussed on FPGA and hardware design.
 
-## Chapter 1: FPGA Basic Experiments in Verilog
+## Chapters 
 
-1. **hello** Basic hello `iverilog`
-- **counter** 8 bit counter
-- **arbiter**
+- [Chapter 1](./chapter-1/): FPGA Basic Experiments in Verilog
+
 
 -------------------------------------------------------------------------------------------
 

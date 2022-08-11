@@ -1,8 +1,8 @@
 # Chapter 1: FPGA Basic Experiments in Verilog
 
 1. **hello** Basic hello `iverilog`
-- **counter** 8 bit counter
-- **arbiter**
+2. **counter** 8 bit counter
+3. **arbiter** Aribiter
 
 ## iverilog
 
