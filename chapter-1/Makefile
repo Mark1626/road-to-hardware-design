@@ -18,6 +18,14 @@ adder/bench/tadder: adder/bench/tadder.v \
 	adder/rtl/ripple_adder_8bit.v 
 	$(IVERILOG) -o $@ $^
 
+addsub/bench/taddsub: addsub/bench/taddsub.v \
+	addsub/rtl/full_adder.v \
+	addsub/rtl/half_adder.v \
+	addsub/rtl/ripple_adder_4bit.v \
+	addsub/rtl/ripple_adder_8bit.v \
+	addsub/rtl/ripple_addsub_8bit.v
+	$(IVERILOG) -o $@ $^
+
 clean:
 	rm -f hello/hello \
 			counter/tcounter \
