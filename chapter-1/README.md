@@ -9,6 +9,7 @@
    - `cd thruwire`
    - `make generate`
    - `make bench/tthruwire`
+7. **Blinker** Blinks output once every 100_000_000 clock cycles, reconfigurable. Verilator outputs VCD timing diagram
 
 ## Tools
 

@@ -5,5 +5,7 @@ arbiter/tarbiter
 counter/tcounter
 adder/bench/tadder
 thruwire/bench/tthruwire
+blinker/bench/tblinker
+blinker/bench/tblinker_bench
 
 obj_dir
