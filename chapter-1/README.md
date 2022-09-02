@@ -3,6 +3,12 @@
 1. **hello** Basic hello `iverilog`
 2. **counter** 8 bit counter
 3. **arbiter** Aribiter
+4. **Adder** Ripple adder
+5. **Adder/Subtractor** Ripple adder/subtractor
+6. **Thruwire** Simple throughwire with verilator simulation
+   - `cd thruwire`
+   - `make generate`
+   - `make bench/tthruwire`
 
 ## Tools
 

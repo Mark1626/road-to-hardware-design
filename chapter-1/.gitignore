@@ -4,4 +4,6 @@ hello/hello
 arbiter/tarbiter
 counter/tcounter
 adder/bench/tadder
+thruwire/bench/tthruwire
 
+obj_dir
