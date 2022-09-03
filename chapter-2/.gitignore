@@ -1,0 +1,6 @@
+.metals
+.vscode
+
+chisel-tutorial
+target
+test_run_dir
