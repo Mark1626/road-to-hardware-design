@@ -2,14 +2,13 @@
 
 1. **hello** Basic hello `iverilog`
 2. **counter** 8 bit counter
-3. **arbiter** Aribiter
-4. **Adder** Ripple adder
-5. **Adder/Subtractor** Ripple adder/subtractor
-6. **Thruwire** Simple throughwire with verilator simulation
+3. **Adder** Ripple adder
+4. **Adder/Subtractor** Ripple adder/subtractor
+5. **Thruwire** Simple throughwire with verilator simulation
    - `cd thruwire`
    - `make generate`
    - `make bench/tthruwire`
-7. **Blinker** Blinks output once every 100_000_000 clock cycles, reconfigurable. Verilator outputs VCD timing diagram
+6. **Blinker** Blinks output once every 100_000_000 clock cycles, reconfigurable. Verilator outputs VCD timing diagram
 
 ## Tools
 

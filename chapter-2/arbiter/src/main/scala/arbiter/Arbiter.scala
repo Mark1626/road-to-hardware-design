@@ -1,6 +1,10 @@
-package thruwire
+package arbiter
 
 import chisel3._
+
+object ArbiterVerilog extends App {
+  emitVerilog(new Arbiter(), Array.concat(args, Array("-td=./verilog-output")))
+}
 
 class Arbiter extends Module {
   val io = IO(new Bundle {

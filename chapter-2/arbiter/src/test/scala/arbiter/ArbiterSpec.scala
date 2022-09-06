@@ -1,4 +1,4 @@
-package thruwire
+package arbiter
 
 import chisel3._
 import chiseltest._
@@ -8,7 +8,8 @@ import scala.util.Random
 
 class ArbiterSpec extends AnyFreeSpec with ChiselScalatestTester {
   "Should be able to multiply accumulate" in {
-    test(new Arbiter) { c =>
+    test(new Arbiter)
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
       val data = Random.nextInt(32768)
       c.io.fifo_data.poke(data.U)
 
@@ -16,6 +17,8 @@ class ArbiterSpec extends AnyFreeSpec with ChiselScalatestTester {
         c.io.fifo_valid.poke((((i >> 0) % 2) != 0).B)
         c.io.pe0_ready.poke((((i >> 1) % 2) != 0).B)
         c.io.pe1_ready.poke((((i >> 2) % 2) != 0).B)
+
+        c.clock.step()
 
         c.io.fifo_ready.expect((i > 1).B)
         c.io.pe0_valid.expect((i == 3 || i == 7).B)

@@ -21,10 +21,17 @@ Open Source Verilog compiler https://github.com/steveicarus/iverilog
 2. https://nandland.com/introduction-to-verilog-for-beginners-with-code-examples/
 3. https://www.fpga4fun.com/
 4. https://zipcpu.com/tutorial/
+5. https://www.fpga4fun.com/HDLtutorials.html
 
 ### Chisel
 
 1. https://github.com/chipsalliance/chisel3
+
+-------------------------------------------------------------------------------------------
+
+## Simulators
+
+1. Verilator https://www.veripool.org/verilator/#
 
 -------------------------------------------------------------------------------------------
 
@@ -54,6 +61,8 @@ https://opencores.org/
 
 1. Vitis https://www.xilinx.com/products/design-tools/vitis/vitis-platform.html
 2. Vivado https://www.xilinx.com/products/design-tools/vivado.html
+3. Digilent Adept https://digilent.com/shop/software/digilent-adept/
+  1. This is available in Raspberry PI
 
 -------------------------------------------------------------------------------------------
 

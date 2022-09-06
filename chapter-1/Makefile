@@ -26,6 +26,9 @@ addsub/bench/taddsub: addsub/bench/taddsub.v \
 	addsub/rtl/ripple_addsub_8bit.v
 	$(IVERILOG) -o $@ $^
 
+filter/bench/tfilter: filter/bench/tfilter.v
+	$(IVERILOG) -o $@ $^
+
 clean:
 	rm -f hello/hello \
 			counter/tcounter \
