@@ -9,6 +9,13 @@
 1. Thruwire
 2. MAC
 3. Arbiter
+4. Experiment with register
+5. Fixed Point
+6. Path to scan statistic network
+  - 4 input Bitonic Sorter
+  - Transform network
+  - Generic bitonic sorter
+
 
 ## Arty 7
 
