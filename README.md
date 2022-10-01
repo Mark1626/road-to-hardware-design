@@ -57,6 +57,20 @@ https://opencores.org/
 
 -------------------------------------------------------------------------------------------
 
+## Formal Verification
+
+### SymbiYosys
+
+
+-------------------------------------------------------------------------------------------
+
+## Synthesis
+
+- [yosys](https://yosyshq.net/yosys/)
+- [abc](https://people.eecs.berkeley.edu/~alanmi/abc/)
+
+-------------------------------------------------------------------------------------------
+
 ## Platforms
 
 1. Vitis https://www.xilinx.com/products/design-tools/vitis/vitis-platform.html
