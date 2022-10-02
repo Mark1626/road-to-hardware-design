@@ -83,3 +83,7 @@ https://opencores.org/
 ## Reading
 
 1. http://zipcpu.com/ 
+
+## Books
+
+- [Chisel Book](http://www.imm.dtu.dk/~masca/chisel-book.pdf)

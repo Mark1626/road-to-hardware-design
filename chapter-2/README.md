@@ -31,4 +31,5 @@
 ## Tutorial
 
 - https://github.com/ucb-bar/chisel-tutorial
+- [Chisel Book](http://www.imm.dtu.dk/~masca/chisel-book.pdf)
 
