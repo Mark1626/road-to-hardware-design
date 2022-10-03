@@ -69,6 +69,14 @@ https://opencores.org/
 - [yosys](https://yosyshq.net/yosys/)
 - [abc](https://people.eecs.berkeley.edu/~alanmi/abc/)
 
+
+
+## Papers
+
+- [Running Identical Threads in C-Slow Retiming based Designs for Functional Failure Detection](https://arxiv.org/pdf/1502.01237.pdf)
+- [Time and area efficient pattern matching on FPGAs](https://dl.acm.org/doi/10.1145/968280.968312)
+
+
 -------------------------------------------------------------------------------------------
 
 ## Platforms
