@@ -12,7 +12,7 @@ class ForwardingMemory extends Module {
     val wrEna  = Input(Bool())
   })
 
-  val mem = SyncReadMem(1024, UInt(8.W))
+  val mem = SyncReadMem(1024, UInt(16.W))
 
   val wrAddrReg = RegNext(io.wrData)
   val doForwardReg = RegNext((io.wrAddr === io.rdAddr) && io.wrEna)

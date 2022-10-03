@@ -15,6 +15,8 @@
   - 4 input Bitonic Sorter
   - Transform network
   - Generic bitonic sorter
+7. Understanding synchronous memory
+8. Tree Traversal in a FSM
 
 
 ## Arty 7

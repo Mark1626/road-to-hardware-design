@@ -15,7 +15,7 @@ class Memory extends Module {
     val wrEna  = Input(Bool())
   })
   
-  val mem = SyncReadMem(1024, UInt(8.W))
+  val mem = SyncReadMem(1024, UInt(16.W))
 
   io.rdData := mem.read(io.rdAddr)
 
