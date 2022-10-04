@@ -11,9 +11,14 @@ class TreeTraversalSpec extends AnyFreeSpec with ChiselScalatestTester {
   "Should be able to store and fetch values" in {
     test(new TreeTraverse("./src/test/data/maze.hex", 5))
       .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+        dut.clock.step()
+        dut.clock.step()
+
+        dut.io.pathData.valid.expect(false.B)
+
         dut.io.addr.valid.poke(true.B)
-        dut.io.addr.bits(0).poke(4.U)
-        dut.io.addr.bits(1).poke(16.U)
+        dut.io.addr.bits.startAddr.poke(4.U)
+        dut.io.addr.bits.endAddr.poke(16.U)
 
         dut.clock.step()
 
@@ -28,8 +33,10 @@ class TreeTraversalSpec extends AnyFreeSpec with ChiselScalatestTester {
           dut.io.pathData.bits(i).expect(4)
         }
 
-        dut.clock.step()
-        dut.io.pathData.valid.expect(false.B)
+        for (i <- 0 until 5) {
+          dut.clock.step()
+          dut.io.pathData.valid.expect(true.B)
+        }
     }
   }
 }
