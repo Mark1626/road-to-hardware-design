@@ -22,6 +22,7 @@ Open Source Verilog compiler https://github.com/steveicarus/iverilog
 3. https://www.fpga4fun.com/
 4. https://zipcpu.com/tutorial/
 5. https://www.fpga4fun.com/HDLtutorials.html
+6. https://verilogguide.readthedocs.io/en/latest/index.html
 
 ### Chisel
 
@@ -69,6 +70,28 @@ https://opencores.org/
 - [yosys](https://yosyshq.net/yosys/)
 - [abc](https://people.eecs.berkeley.edu/~alanmi/abc/)
 
+--------------------------------------------------------------------------------------------
+
+## RISC V
+
+### Rocketchip
+
+[RISC V Rocketchip Bootcamp](https://riscv.org/wp-content/uploads/2015/01/riscv-rocket-chip-tutorial-bootcamp-jan2015.pdf)
+
+--------------------------------------------------------------------------------------------
+
+## System on Chip
+
+### Chipyard
+
+[Chipyard](https://fires.im/isca21-slides-pdf/02_chipyard_basics.pdf)
+[Chipyard adding an accelerator](https://chipyard.readthedocs.io/en/1.0.0/Customization/Adding-An-Accelerator.html)
+
+### Diplomacy
+
+### AMBA
+
+--------------------------------------------------------------------------------------------
 
 
 ## Papers
@@ -88,9 +111,10 @@ https://opencores.org/
 
 -------------------------------------------------------------------------------------------
 
-## Reading
+## Blogs and Reading
 
-1. http://zipcpu.com/ 
+1. http://zipcpu.com/
+2. https://lowrisc.org/
 
 ## Books
 

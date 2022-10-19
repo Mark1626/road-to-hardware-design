@@ -16,7 +16,9 @@
   - Transform network
   - Generic bitonic sorter
 7. Understanding synchronous memory
-8. Tree Traversal in a FSM
+8. Tree Traversal in a FSM [Not complete]
+9. **fact** - Factorial of a number
+
 
 
 ## Arty 7
