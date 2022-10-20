@@ -89,6 +89,12 @@ https://opencores.org/
 
 ### Diplomacy
 
+[A Crash Course in the Diplomacy Framework](https://www.youtube.com/watch?v=4VfMCO4q26g)
+[Diplomacy and Tileset Reference](https://chipyard.readthedocs.io/en/latest/TileLink-Diplomacy-Reference/index.html)
+[Available Node Types in rocketchip](https://github.com/chipsalliance/rocket-chip/blob/master/src/main/scala/diplomacy/Nodes.scala)
+[Diplomatic adder](https://github.com/chipsalliance/rocket-chip/blob/master/docs/src/diplomacy/adder_tutorial.md)
+
+
 ### AMBA
 
 --------------------------------------------------------------------------------------------
