@@ -1,0 +1,16 @@
+# read design
+read_verilog ../chapter-1/addsub/rtl/full_adder.v
+read_verilog ../chapter-1/addsub/rtl/half_adder.v
+
+# generic synthesis
+synth_ice40 -top full_adder
+
+# mapping to mycells.lib
+# dfflibmap -liberty mycells.lib
+# abc -liberty mycells.lib
+clean
+
+show full_adder
+
+# write synthesized design
+write_verilog synth.v
