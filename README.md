@@ -103,8 +103,6 @@ Tiny FPGA https://tinyfpga.com/
 ## Accelerators
 
 
-https://carrv.github.io/2018/papers/CARRV_2018_paper_2.pdf
-
 
 ### AMBA
 
@@ -136,11 +134,21 @@ https://carrv.github.io/2018/papers/CARRV_2018_paper_2.pdf
 
 -------------------------------------------------------------------------------------------
 
+## Videos
+
+- [Rocket chip ecosystem](https://www.youtube.com/watch?v=Eko86PGEoDY)
+
 ## Blogs and Reading
 
 1. http://zipcpu.com/
 2. https://lowrisc.org/
 
+- [Chiffre - Hardware Fault Injection Framework](https://carrv.github.io/2018/papers/CARRV_2018_paper_2.pdf)
+- [Hwacha Vector-Fetch Architecture Manual](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2015/EECS-2015-262.pdf)
+- [The Rocket Chip Generator](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-17.pdf)
+
 ## Books
 
 - [Chisel Book](http://www.imm.dtu.dk/~masca/chisel-book.pdf)
+
+
