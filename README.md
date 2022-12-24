@@ -40,21 +40,27 @@ Open Source Verilog compiler https://github.com/steveicarus/iverilog
 
 ### Xilinx FPGAs
 
-https://www.xilinx.com/products/silicon-devices/fpga.html
+- https://www.xilinx.com/products/silicon-devices/fpga.html
 
 ### Open FPGA
 
-https://makerchip.com/
-https://github.com/os-fpga/GettingStartedWithFPGAs
-https://fpgatutorial.com/open-source-fpga-tools/
+- https://makerchip.com/
+- https://github.com/os-fpga/GettingStartedWithFPGAs
+- https://fpgatutorial.com/open-source-fpga-tools/
 
 Tiny FPGA https://tinyfpga.com/
+
+### ICE40
+
+- https://hackaday.com/tag/ice40/
 
 -------------------------------------------------------------------------------------------
 
 ## Open Cores
 
-https://opencores.org/
+- https://opencores.org/
+- https://alchitry.com/projects/gpu
+- https://alchitry.com/memory-mapping-verilog
 
 -------------------------------------------------------------------------------------------
 
@@ -84,26 +90,39 @@ https://opencores.org/
 
 ### Chipyard
 
-[Chipyard](https://fires.im/isca21-slides-pdf/02_chipyard_basics.pdf)
-[Chipyard adding an accelerator](https://chipyard.readthedocs.io/en/1.0.0/Customization/Adding-An-Accelerator.html)
+- [Chipyard](https://fires.im/isca21-slides-pdf/02_chipyard_basics.pdf)
+- [Chipyard adding an accelerator](https://chipyard.readthedocs.io/en/1.0.0/Customization/Adding-An-Accelerator.html)
 
 ### Diplomacy
 
-[A Crash Course in the Diplomacy Framework](https://www.youtube.com/watch?v=4VfMCO4q26g)
-[Diplomacy and Tileset Reference](https://chipyard.readthedocs.io/en/latest/TileLink-Diplomacy-Reference/index.html)
-[Available Node Types in rocketchip](https://github.com/chipsalliance/rocket-chip/blob/master/src/main/scala/diplomacy/Nodes.scala)
-[Diplomatic adder](https://github.com/chipsalliance/rocket-chip/blob/master/docs/src/diplomacy/adder_tutorial.md)
+- [A Crash Course in the Diplomacy Framework](https://www.youtube.com/watch?v=4VfMCO4q26g)
+- [Diplomacy and Tileset Reference](https://chipyard.readthedocs.io/en/latest/TileLink-Diplomacy-Reference/index.html)
+- [Available Node Types in rocketchip](https://github.com/chipsalliance/rocket-chip/blob/master/src/main/scala/diplomacy/Nodes.scala)
+- [Diplomatic adder](https://github.com/chipsalliance/rocket-chip/blob/master/docs/src/diplomacy/adder_tutorial.md)
+
+## Accelerators
+
+
+https://carrv.github.io/2018/papers/CARRV_2018_paper_2.pdf
 
 
 ### AMBA
 
 --------------------------------------------------------------------------------------------
 
+## LLVM CIRCT
+
+- [LLVM Circt](https://github.com/llvm/circt)
+- [Sifive chisel to circt](https://github.com/sifive/chisel-circt)
+  + Adds a Chisel stage that generates LLVM circt
+
+--------------------------------------------------------------------------------------------
 
 ## Papers
 
 - [Running Identical Threads in C-Slow Retiming based Designs for Functional Failure Detection](https://arxiv.org/pdf/1502.01237.pdf)
 - [Time and area efficient pattern matching on FPGAs](https://dl.acm.org/doi/10.1145/968280.968312)
+- [A Configurable Hardware Fault Injection Framework for RISC-V Systems](https://carrv.github.io/2018/papers/CARRV_2018_paper_2.pdf)
 
 
 -------------------------------------------------------------------------------------------
