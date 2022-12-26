@@ -52,7 +52,8 @@ Tiny FPGA https://tinyfpga.com/
 
 ### ICE40
 
-- https://hackaday.com/tag/ice40/
+- [Hackaday ICE40](https://hackaday.com/tag/ice40/)
+- [Project Icestorm](https://clifford.at/icestorm)
 
 -------------------------------------------------------------------------------------------
 
@@ -146,6 +147,8 @@ Tiny FPGA https://tinyfpga.com/
 - [Chiffre - Hardware Fault Injection Framework](https://carrv.github.io/2018/papers/CARRV_2018_paper_2.pdf)
 - [Hwacha Vector-Fetch Architecture Manual](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2015/EECS-2015-262.pdf)
 - [The Rocket Chip Generator](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-17.pdf)
+- [Untethering the RISC-V Rocket Chip](https://riscv.org/wp-content/uploads/2016/01/Wed1115-untether_wsong83.pdf)
+- [Chipyard prototyping for Arty and VCU118](https://chipyard.readthedocs.io/en/stable/Prototyping/Arty.html)
 
 ## Books
 
