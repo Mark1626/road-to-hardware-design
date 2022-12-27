@@ -1,8 +1,10 @@
-# Chapter 3 - Rocketchip SoC generator
+# Chapter 3 - ICE40
 
-1. diplomacy-101: Running [Diplomatic adder](https://github.com/chipsalliance/rocket-chip/blob/master/docs/src/diplomacy/adder_tutorial.md) tutorial from rocketchip
 
-## Resources
+## OpenSource Tools
 
-[Available Node Types in rocketchip](https://github.com/chipsalliance/rocket-chip/blob/master/src/main/scala/diplomacy/Nodes.scala)
-[Diplomatic adder](https://github.com/chipsalliance/rocket-chip/blob/master/docs/src/diplomacy/adder_tutorial.md)
+1. iverilog/Chisel - HDL
+2. yosys - Synthesis
+3. nextpnr - Place and Route
+4. icepack - Package bitstream
+5. iceprog - Upload bitstream

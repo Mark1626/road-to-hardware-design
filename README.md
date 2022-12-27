@@ -54,6 +54,7 @@ Tiny FPGA https://tinyfpga.com/
 
 - [Hackaday ICE40](https://hackaday.com/tag/ice40/)
 - [Project Icestorm](https://clifford.at/icestorm)
+- [Three part deep dive explains lattice ice40 fpga details](https://hackaday.com/2018/09/27/three-part-deep-dive-explains-lattice-ice40-fpga-details/)
 
 -------------------------------------------------------------------------------------------
 
@@ -84,6 +85,9 @@ Tiny FPGA https://tinyfpga.com/
 ### Rocketchip
 
 [RISC V Rocketchip Bootcamp](https://riscv.org/wp-content/uploads/2015/01/riscv-rocket-chip-tutorial-bootcamp-jan2015.pdf)
+[Available Node Types in rocketchip](https://github.com/chipsalliance/rocket-chip/blob/master/src/main/scala/diplomacy/Nodes.scala)
+[Diplomatic adder](https://github.com/chipsalliance/rocket-chip/blob/master/docs/src/diplomacy/adder_tutorial.md)
+
 
 --------------------------------------------------------------------------------------------
 
@@ -93,6 +97,7 @@ Tiny FPGA https://tinyfpga.com/
 
 - [Chipyard](https://fires.im/isca21-slides-pdf/02_chipyard_basics.pdf)
 - [Chipyard adding an accelerator](https://chipyard.readthedocs.io/en/1.0.0/Customization/Adding-An-Accelerator.html)
+- [Micro 2022 Chipyard tutorial](https://fires.im/micro-2022-tutorial/)
 
 ### Diplomacy
 
@@ -106,6 +111,14 @@ Tiny FPGA https://tinyfpga.com/
 
 
 ### AMBA
+
+--------------------------------------------------------------------------------------------
+
+## Open Source Toolchain
+
+- [F4PGA](https://github.com/chipsalliance/f4pga)
+- [APIO](https://github.com/FPGAwars/apio)
+- [Icestudio](https://github.com/FPGAwars/icestudio)
 
 --------------------------------------------------------------------------------------------
 
@@ -138,6 +151,7 @@ Tiny FPGA https://tinyfpga.com/
 ## Videos
 
 - [Rocket chip ecosystem](https://www.youtube.com/watch?v=Eko86PGEoDY)
+- [Rapid Accelerator Design with Chisel](https://www.youtube.com/watch?v=IZeUHzukStE)
 
 ## Blogs and Reading
 

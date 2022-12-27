@@ -1,0 +1,20 @@
+set_io clock   P7
+set_io reset   P8
+
+#set_io spi_mosi M11
+#set_io spi_miso P11
+#set_io spi_sck  P12
+#set_io spi_ss   P13
+
+# set_io leds[0] J11
+# set_io leds[1] K11
+# set_io leds[2] K12
+# set_io leds[3] K14
+#set_io led[4] L12
+#set_io led[5] L14
+#set_io led[6] M12
+#set_io led[7] N14
+
+set_io io_rx P14 # tx in the schematic
+set_io io_tx M9  # rx in the schematic
+
