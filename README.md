@@ -66,6 +66,12 @@ Tiny FPGA https://tinyfpga.com/
 
 -------------------------------------------------------------------------------------------
 
+## Concepts
+
+- [fmax](https://www.intel.com/content/www/us/en/docs/programmable/683152/21-3/maximum-frequency-fmax.html)
+
+-------------------------------------------------------------------------------------------
+
 ## Formal Verification
 
 ### SymbiYosys
@@ -81,6 +87,14 @@ Tiny FPGA https://tinyfpga.com/
 --------------------------------------------------------------------------------------------
 
 ## RISC V
+
+### RISC-V Instructions
+
+1. [RISCV Atomic Memory Operations(AMO)](https://five-embeddev.com/riscv-isa-manual/latest/a.html)
+
+#### Resources
+
+- [Thread Level Parallelism](https://inst.eecs.berkeley.edu/~cs61c/resources/su18_lec/Lecture19.pdf)
 
 ### Rocketchip
 

@@ -1,16 +1,17 @@
-package uart
+package blocks
 
 import chisel3._
 import chiseltest._
 import org.scalatest.freespec.AnyFreeSpec
+import uart.BaudRates
 
 class UartEchoSpec extends AnyFreeSpec with ChiselScalatestTester {
 
-  val baudrate = 868
+  val baudrate = BaudRates.B115200;
   val waitTime = baudrate * 4
 
   "Should be able to echo when value recieved" in {
-    test(new UartEcho(baudrate))
+    test(new UartEcho(baudrate, false))
       .withAnnotations(Seq(WriteVcdAnnotation, VerilatorBackendAnnotation)) { dut =>
 
         dut.clock.setTimeout(100000)
@@ -34,17 +35,17 @@ class UartEchoSpec extends AnyFreeSpec with ChiselScalatestTester {
         // Assumes just a-z
         val sendChar = (c: Char) => {
           // Start bit
-          dut.io.rx.poke(0.U)
+          dut.uart.rx.poke(0.U)
 
           val bits = getBitsStr(c)
           for (bit <- bits) {
             dut.clock.step(baudrate)
-            dut.io.rx.poke((bit.toInt - '0').U)
+            dut.uart.rx.poke((bit.toInt - '0').U)
           }
 
           // Stop bit
           dut.clock.step(baudrate)
-          dut.io.rx.poke(1.U)
+          dut.uart.rx.poke(1.U)
         }
 
         val sendStr = (str: String) => {

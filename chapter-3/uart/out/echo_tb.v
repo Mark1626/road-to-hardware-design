@@ -60,8 +60,8 @@ wire [3:0] leds;
 UartEcho dut(
     .clock(clk),
     .reset(rst),
-    .io_rx(rx),
-    .io_tx(tx)
+    .uart_rx(rx),
+    .uart_tx(tx)
   );
 
 //-- Clock generator
