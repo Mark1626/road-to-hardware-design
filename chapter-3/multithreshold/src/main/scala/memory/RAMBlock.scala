@@ -13,7 +13,7 @@ trait RAMBlockParams {
   val ramSize = p(RAMBlockSize)
   val dataWidth = p(DataWidth)
 
-  def addrWidth: Int = log2Ceil(ramSize)
+  val addrWidth = log2Ceil(ramSize)
 }
 
 class RAMBlockIO(val addrWidth: Int, val dataWidth: Int) extends Bundle {
@@ -25,9 +25,8 @@ class RAMBlockIO(val addrWidth: Int, val dataWidth: Int) extends Bundle {
   val wrena   = Input(Bool())
 }
 
-trait HasRAMMemIO extends BaseModule {
-  val dataWidth: Int
-  val addrWidth: Int
+trait HasRAMMemIO extends BaseModule with RAMBlockParams {
+  implicit val p: Parameters
 
   val io = IO(new RAMBlockIO(addrWidth, dataWidth))
 }

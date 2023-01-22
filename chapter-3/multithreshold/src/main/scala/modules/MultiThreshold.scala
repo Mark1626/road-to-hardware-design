@@ -1,5 +1,6 @@
 package modules
 
+import bus.Wishbone
 import chipsalliance.rocketchip.config.{Field, Parameters}
 import chisel3._
 import chisel3.util._
@@ -14,47 +15,29 @@ trait ThresholdParams {
   val bp  = p(BinaryPointWidth)
 }
 
-class ThresholdDetectorIO(w: Int, bp: Int) extends Bundle {
+class ThresholdDetectorIO()(implicit val p: Parameters) extends Bundle with ThresholdParams {
   val in  = Flipped(Decoupled(FixedPoint(w.W, bp.BP)))
+  val threshold = Input(FixedPoint(w.W, bp.BP))
   val out = Decoupled(Bool())
 }
 
 trait HasThresholdDetectorIO extends BaseModule {
-  val w: Int
-  val bp: Int
-
-  val io = IO(new ThresholdDetectorIO(w, bp))
-}
-
-class MultiThresholdRAMIO()(implicit val p: Parameters) extends Bundle
-  with RAMParams {
-  val rdAddr = Flipped(Decoupled(UInt(addrWidth.W)))
-  val rdData = Decoupled(UInt(dataWidth.W))
-}
-
-trait HasMultiThresholdRAMIO extends BaseModule {
   implicit val p: Parameters
-  val mem = IO(new MultiThresholdRAMIO()(p))
+
+  val io = IO(new ThresholdDetectorIO()(p))
 }
 
-class ThresholdDetectorChiselModule(val offset: Int)(implicit val p: Parameters) extends Module
+class ThresholdDetectorChiselModule(val offset: Int = 0)(implicit val p: Parameters) extends Module
   with ThresholdParams
-  with HasThresholdDetectorIO
-  with HasMultiThresholdRAMIO {
+  with HasThresholdDetectorIO {
 
-  val s_init :: s_idle :: s_busy :: s_done :: Nil = Enum(4)
+  val s_idle :: s_busy :: s_done :: Nil = Enum(3)
 
-  val si_idle :: si_busy :: si_done :: Nil = Enum(2)
-  val initState = RegInit(si_idle)
-
-  val state = RegInit(s_init)
+  val state = RegInit(s_idle)
 
   val v = Reg(FixedPoint(w.W, bp.BP))
   val res = Reg(Bool())
   val done = RegInit(false.B)
-
-  val threshold = RegInit(FixedPoint(w.W, bp.BP))
-  val initDone = RegInit(false.B)
 
   io.in.ready := state === s_idle
   io.out.valid := state === s_done
@@ -62,33 +45,30 @@ class ThresholdDetectorChiselModule(val offset: Int)(implicit val p: Parameters)
 
   when(state === s_idle && io.in.valid) {
     state := s_busy
-    res := 0.F(0.BP)
+    res := false.B
     done := false.B
   }.elsewhen(state === s_busy && done) {
     state := s_done
   }.elsewhen(state === s_done && io.out.ready) {
-    state := s_idle
-  } .elsewhen(state === s_init && initDone) {
     state := s_idle
   }
 
   when(state === s_idle && io.in.valid) {
     v := io.in.bits
   }.elsewhen(state === s_busy) {
-    when(threshold > v) {
-      res := 1.F(0.BP)
+    when(v > io.threshold) {
+      res := true.B
     }.otherwise {
-      res := 0.F(0.BP)
+      res := false.B
     }
     done := true.B
-  }.elsewhen(state === s_init) {
-
-    when (mem.rdAddr.ready) {
-      mem.rdAddr  := offset.U
-    }
-    // Need a transaction here
-
-    threshold   := mem.rdData
-    initDone    := true.B
   }
+}
+
+class WishboneThresholdDetector()(implicit val p: Parameters) extends Module {
+  val io = IO(new Bundle{
+    val bus = new Wishbone(N=32)
+  })
+
+
 }
