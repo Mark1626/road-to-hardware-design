@@ -60,8 +60,8 @@ class RAMBankIndexed(val idx_w: Int)(implicit val p: Parameters) extends Module 
     (read _, write _)
   }
 
-  val ren = io.req.ready && !io.req.bits.data.wrena
-  val wen = io.req.ready && io.req.bits.data.wrena
+  val ren = io.req.fire && !io.req.bits.data.wrena
+  val wen = io.req.fire && io.req.bits.data.wrena
 
   val addr = io.req.bits.data.addr
   val curr_idx = io.req.bits.idx
@@ -76,10 +76,8 @@ class RAMBankIndexed(val idx_w: Int)(implicit val p: Parameters) extends Module 
   q.io.enq.bits.data.data := rdata
   q.io.enq.bits.idx := curr_idx
 
-//  io.res <> q.io.deq
   q.io.deq.ready := io.res.ready
-  io.res.bits.idx := q.io.deq.bits.idx
-  io.res.bits.data.data := q.io.deq.bits.data.data
+  io.res.bits <> q.io.deq.bits
   io.res.valid := q.io.deq.fire
 
   io.req.ready := q.io.enq.ready

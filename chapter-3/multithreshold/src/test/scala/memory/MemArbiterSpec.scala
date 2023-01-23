@@ -23,16 +23,23 @@ class MemArbiterSpec extends AnyFreeSpec with ChiselScalatestTester {
       dut.io.req_in.bits.idx.poke(idx.U)
       dut.io.req_in.valid.poke(true.B)
       dut.clock.step()
+
+      dut.io.req_in.valid.poke(false.B)
+      dut.clock.step()
     }
-    def dequeueReadReq(): (MemReq, UInt) = {
+
+    def currentReq(): (MemReq, UInt) = {
+      (dut.io.req_out.bits.data, dut.io.req_out.bits.idx)
+    }
+
+    def dequeueReadReq() = {
       dut.io.req_out.ready.poke(true.B)
       dut.clock.step()
       while(dut.io.req_out.valid.peek() == false.B) { dut.clock.step() }
-      (dut.io.req_out.bits.data, dut.io.req_out.bits.idx)
     }
   }
 
-  "arbiter should be able to enque and deque requests" in {
+  "Memory arbiter waveform analysis" in {
     val n = 3
     test(new MemArbiter(n, log2Ceil(n))(p))
       .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
@@ -41,10 +48,15 @@ class MemArbiterSpec extends AnyFreeSpec with ChiselScalatestTester {
       helper.enqueueReadReq(101, 2)
       helper.enqueueReadReq(102, 3)
 
-      val res = helper.dequeueReadReq()
+      val res = helper.currentReq()
       res._2.expect(1)
       res._1.wrena.expect(false.B)
       res._1.addr.expect(100)
+
+      helper.dequeueReadReq()
+      res._2.expect(2)
+      res._1.wrena.expect(false.B)
+      res._1.addr.expect(101)
     }
   }
 }

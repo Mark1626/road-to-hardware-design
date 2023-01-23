@@ -9,6 +9,8 @@ import org.scalatest.freespec.AnyFreeSpec
 import java.util.Random
 import java.util.concurrent.ThreadLocalRandom
 
+// TODO: Revisit the VCD waveform, it kind of looks sketchy as signals
+//       set in the test occur at falling edge and the module uses the rising edge
 class RAMBankIndexedSpec extends AnyFreeSpec with ChiselScalatestTester  {
 
   val p: Parameters = new Config((site, here, up) => {
@@ -20,30 +22,38 @@ class RAMBankIndexedSpec extends AnyFreeSpec with ChiselScalatestTester  {
   class RAMBankSpecHelper(dut: RAMBankIndexed) {
     def writeReq(addr: Int, data: Int): Unit = {
       while(dut.io.req.ready.peek() == false.B) { dut.clock.step() }
-      //println("Ready to send write request")
 
       dut.io.req.bits.data.addr.poke(addr.U)
       dut.io.req.bits.data.data.poke(data.U)
       dut.io.req.bits.data.wrena.poke(true.B)
       dut.io.req.valid.poke(true.B)
       dut.clock.step()
+
+      dut.io.req.valid.poke(false.B)
+      dut.clock.step()
     }
 
     def readReq(addr: Int, idx: Int): (UInt, UInt) = {
       while(dut.io.req.ready.peek() == false.B) { dut.clock.step() }
-      //println("Ready to send read request")
 
       dut.io.req.bits.data.addr.poke(addr.U)
       dut.io.req.bits.data.wrena.poke(false.B)
       dut.io.req.bits.idx.poke(idx)
-      dut.io.req.valid.poke(false.B)
+      dut.io.req.valid.poke(true.B)
       dut.clock.step()
 
+      dut.io.req.valid.poke(false.B)
       dut.io.res.ready.poke(true.B)
       dut.clock.step()
 
       while (dut.io.res.valid.peek() == false.B) { dut.clock.step() }
-      (dut.io.res.bits.data.data, dut.io.res.bits.idx)
+
+      val res = (dut.io.res.bits.data.data, dut.io.res.bits.idx)
+
+      dut.io.res.ready.poke(false.B)
+      dut.clock.step()
+
+      res
     }
 
     def populateRAM(): Unit = {
@@ -55,6 +65,25 @@ class RAMBankIndexedSpec extends AnyFreeSpec with ChiselScalatestTester  {
 
   def randInt(min: Int, max: Int): Int = {
     ThreadLocalRandom.current().nextInt(min, max)
+  }
+
+  "rambank waveform analysis" in {
+    val n = 10
+    test(new RAMBankIndexed(log2Ceil(n))(p))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+      val helper = new RAMBankSpecHelper(dut)
+
+      for (i <- 0 until 4) {
+        helper.writeReq(i, 10 + i)
+      }
+
+      for (i <- 0 until 4) {
+        val idx = (3-i)
+        var res = helper.readReq(idx, 1)
+        res._1.expect((10 + idx).U)
+        res._2.expect(1.U)
+      }
+    }
   }
 
   "rambank should be able to store and retrieve data" in {
@@ -72,10 +101,9 @@ class RAMBankIndexedSpec extends AnyFreeSpec with ChiselScalatestTester  {
     }
   }
 
-  "should return response with correct idx as request" in {
+  "rambank should return response with correct idx as request" in {
     val n = 10
     test(new RAMBankIndexed(log2Ceil(n))(p)) { dut =>
-      //      .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
       val helper = new RAMBankSpecHelper(dut)
 
       for (i <- 0 until 1024) {
@@ -92,5 +120,7 @@ class RAMBankIndexedSpec extends AnyFreeSpec with ChiselScalatestTester  {
       }
     }
   }
+
+  // TODO: Add test when request_ready is false, this happens when the queue is full
 
 }
