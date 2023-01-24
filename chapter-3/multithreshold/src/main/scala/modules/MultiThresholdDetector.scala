@@ -2,7 +2,7 @@ package modules
 
 import chisel3._
 import chisel3.util._
-import bus.Wishbone
+import bus.WishboneSlave
 import chipsalliance.rocketchip.config.{Field, Parameters}
 import chisel3.experimental.FixedPoint
 import memory.{MemArbiter, RAMBankIndexed, RAMBankParams}
@@ -15,7 +15,7 @@ trait MultiThresholdParams extends ThresholdParams {
   val idx_w = log2Ceil(nodes)
 }
 
-class MultiThresholdDetectorIO()(implicit val p: Parameters) extends Module
+class MultiThresholdDetectorIO()(implicit val p: Parameters) extends Bundle
   with MultiThresholdParams {
   val in = Flipped(Decoupled(FixedPoint(w.W, bp.BP)))
   val out = Decoupled(UInt(log2Ceil(nodes).W))

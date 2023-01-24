@@ -6,35 +6,6 @@ import chiseltest._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class MultiThresholdWishboneSpec(dut: WishboneThresholdDetector) {
-  def wishboneWrite(addr: Long, data: Long): Unit = {
-    dut.io.bus.addr.poke(addr)
-    dut.io.bus.data_wr.poke(data)
-    dut.io.bus.we.poke(true)
-    dut.io.bus.cyc.poke(true)
-    dut.io.bus.stb.poke(true)
-    while (dut.io.bus.ack.peek() != true.B) dut.clock.step(1)
-    dut.io.bus.cyc.poke(false)
-    dut.io.bus.stb.poke(false)
-    dut.clock.step(1)
-    dut.io.bus.ack.expect(0)
-  }
-
-  def wishboneRead(addr: Long): Unit = {
-    dut.io.bus.addr.poke(addr)
-    dut.io.bus.we.poke(false)
-    dut.io.bus.cyc.poke(true)
-    dut.io.bus.stb.poke(true)
-    while (dut.io.bus.ack.peek() != true.B) dut.clock.step(1)
-    dut.io.bus.cyc.poke(false)
-    dut.io.bus.stb.poke(false)
-    val data_out = dut.io.bus.data_rd.peek()
-    dut.clock.step(1)
-    dut.io.bus.ack.expect(0)
-    return data_out
-  }
-}
-
 class ThresholdDetectorSpec extends AnyFreeSpec with ChiselScalatestTester with Matchers {
   val p: Parameters = new Config((site, here, up) => {
     case FixedPointWidth => 8

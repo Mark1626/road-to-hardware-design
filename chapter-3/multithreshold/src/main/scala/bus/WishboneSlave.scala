@@ -1,7 +1,7 @@
 package bus
 
 import chisel3._
-class Wishbone(val N: Int) extends Bundle {
+class WishboneSlave(val N: Int) extends Bundle {
   assert(N % 8 == 0)
   val NUM_BYTES = N / 8
 
