@@ -35,7 +35,7 @@ class MultiThresholdWishboneSpec(dut: WishboneThresholdDetector) {
   }
 }
 
-class MultiThresholdSpec extends AnyFreeSpec with ChiselScalatestTester with Matchers {
+class ThresholdDetectorSpec extends AnyFreeSpec with ChiselScalatestTester with Matchers {
   val p: Parameters = new Config((site, here, up) => {
     case FixedPointWidth => 8
     case BinaryPointWidth => 4

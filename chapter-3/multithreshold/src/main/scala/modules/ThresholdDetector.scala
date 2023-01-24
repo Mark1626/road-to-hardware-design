@@ -1,11 +1,9 @@
 package modules
 
-import bus.Wishbone
 import chipsalliance.rocketchip.config.{Field, Parameters}
-import chisel3._
-import chisel3.util._
 import chisel3.experimental.{BaseModule, FixedPoint}
-
+import chisel3.util._
+import chisel3._
 case object FixedPointWidth   extends Field[Int]
 case object BinaryPointWidth  extends Field[Int]
 
@@ -63,12 +61,4 @@ class ThresholdDetectorChiselModule(val offset: Int = 0)(implicit val p: Paramet
     }
     done := true.B
   }
-}
-
-class WishboneThresholdDetector()(implicit val p: Parameters) extends Module {
-  val io = IO(new Bundle{
-    val bus = new Wishbone(N=32)
-  })
-
-
 }
