@@ -9,6 +9,8 @@ case object RAMBlockSize extends Field[Int]
 case object DataWidth extends Field[Int]
 case object ReadBuffer extends Field[Int]
 
+case object NumberOfNodes extends Field[Int]
+
 class Indexed[+T <: Data](gen: T, w: Int) extends Bundle {
   val data = Output(gen)
   val idx = Output(UInt(w.W))
@@ -33,6 +35,12 @@ trait RAMBankParams {
   val addrWidth = log2Ceil(ramSize)
 }
 
+trait SharedRAMParams extends RAMBankParams {
+  implicit val p: Parameters
+  val nodes = p(NumberOfNodes)
+  val idx_w = log2Ceil(nodes)
+}
+
 class MemReq(val dataWidth: Int, addrWidth: Int) extends Bundle {
   val addr = UInt(addrWidth.W)
   val wrena = Bool()
@@ -43,15 +51,21 @@ class MemRes(val w: Int) extends Bundle {
   val data = UInt(w.W)
 }
 
+class RAMBankIO()(implicit val p: Parameters) extends Bundle
+  with RAMBankParams
+  with SharedRAMParams {
+  val req = Flipped(Decoupled(Indexed(new MemReq(dataWidth, addrWidth), idx_w)))
+  val res = Decoupled(Indexed(new MemRes(dataWidth), idx_w))
+}
+
 /**
  * For write requests idx is DontCare
  * For read requests req.data is DontCare
  */
-class RAMBankIndexed(val idx_w: Int)(implicit val p: Parameters) extends Module with RAMBankParams {
-  val io = IO(new Bundle {
-    val req = Flipped(Decoupled(Indexed(new MemReq(dataWidth, addrWidth), idx_w)))
-    val res = Decoupled(Indexed(new MemRes(dataWidth), idx_w))
-  })
+class RAMBankIndexed()(implicit val p: Parameters) extends Module
+  with RAMBankParams
+  with SharedRAMParams {
+  val io = IO(new RAMBankIO()(p))
 
   val (read, write) = {
     val mem = SyncReadMem(ramSize, UInt(dataWidth.W))
@@ -76,9 +90,7 @@ class RAMBankIndexed(val idx_w: Int)(implicit val p: Parameters) extends Module 
   q.io.enq.bits.data.data := rdata
   q.io.enq.bits.idx := curr_idx
 
-  q.io.deq.ready := io.res.ready
-  io.res.bits <> q.io.deq.bits
-  io.res.valid := q.io.deq.fire
+  io.res <> q.io.deq
 
   io.req.ready := q.io.enq.ready
 }

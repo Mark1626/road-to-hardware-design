@@ -27,7 +27,7 @@ class MultiThresholdDetector()(implicit val p: Parameters) extends Module
 
   val io = IO(new MultiThresholdDetectorIO())
 
-  val rambank = Module(new RAMBankIndexed(idx_w))
+  val rambank = Module(new RAMBankIndexed())
   val memarbiter = Module(new MemArbiter(nodes, idx_w))
 
   val detectors = Seq.range(0, nodes).map(nodeIdx =>

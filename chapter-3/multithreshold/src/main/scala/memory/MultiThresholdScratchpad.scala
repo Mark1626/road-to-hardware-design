@@ -14,7 +14,7 @@ class MultiThresholdScratchpad()(implicit val p: Parameters) extends Module
     val res = Decoupled(Indexed(new MemRes(dataWidth), idx_w))
   })
 
-  val rambank = Module(new RAMBankIndexed(idx_w))
+  val rambank = Module(new RAMBankIndexed())
   val memarbiter = Module(new MemArbiter(nodes, idx_w))
 
   memarbiter.io.req_in <> io.req
