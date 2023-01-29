@@ -1,6 +1,18 @@
 package bus
 
 import chisel3._
+
+/*
+ * Wishbone
+ *
+ * err is set when
+ *  1. No slave is selected
+ *  2. More than one slave is selected
+ *  3. More than one acknowledgement is received
+ *
+ *
+ */
+
 class WishboneSlave(val N: Int) extends Bundle {
   assert(N % 8 == 0)
   val NUM_BYTES = N / 8
@@ -13,6 +25,7 @@ class WishboneSlave(val N: Int) extends Bundle {
   val data_wr = Input(UInt(N.W))
 
   val ack = Output(Bool())
+  val stall = Output(Bool())
   val err = Output(Bool())
   val data_rd = Output(UInt(N.W))
 }
