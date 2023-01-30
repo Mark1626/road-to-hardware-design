@@ -3,55 +3,51 @@ package modules
 import chipsalliance.rocketchip.config.Parameters
 import chisel3._
 import chisel3.util._
-import memory.{RAMBankIO, RAMBankIndexed, RAMBankParams, SharedRAMParams}
+import memory.{IndexedBusSlaveBundle, BusSlaveBundle, RAMBankIndexed, SharedRAMParams}
 
-class TopIO() extends Bundle {
-  val addr = Flipped(Decoupled(UInt(32.W)))
-  val data_rd = Decoupled(UInt(32.W))
+class ModuleBundle()(implicit val p: Parameters) extends Bundle {
+  val down = Flipped(new IndexedBusSlaveBundle()(p)) // Bus master
+  val up = new BusSlaveBundle()(p)
 }
 
-class ReaderIO()(implicit val p: Parameters) extends Bundle {
-  val mem = Flipped(new RAMBankIO()(p))
-  val top = new TopIO()
-}
-
-class Reader()(implicit val p: Parameters) extends Module
+class Reader(val idx: Int)(implicit val p: Parameters) extends Module
   with SharedRAMParams {
-  val io = IO(new ReaderIO())
+  val io = IO(new ModuleBundle())
 
   val idle :: read_req_start :: read_req_done :: done :: Nil = Enum(4)
   val state = RegInit(idle)
 
-  val data_valid = RegInit(false.B)
   val data = Reg(UInt(32.W))
 
-  io.mem.req.valid := false.B
+  // Downstream
+  io.down.req.valid := false.B
+  io.down.req.bits.idx := idx.U(idx_w.W)
   // Read Request, data is DontCare, wrena is false
-  io.mem.req.bits.data.data := DontCare
-  io.mem.req.bits.data.wrena := false.B
-  io.mem.req.bits.data.addr := io.top.addr.bits
-  io.mem.req.bits.idx := 1.U
+  io.down.req.bits.data.data := DontCare
+  io.down.req.bits.data.wrena := false.B
+  io.down.req.bits.data.addr := io.up.req.bits.addr
 
-  io.mem.res.ready := false.B
+  io.down.res.ready := false.B
 
-  io.top.addr.ready := state === idle
+  // Upstream
+  io.up.req.ready := state === idle
 
-  io.top.data_rd.bits := data
-  io.top.data_rd.valid := false.B
+  io.up.res.bits.data := data
+  io.up.res.valid := false.B
 
-  when (state === idle && io.top.addr.valid) {
+  when (state === idle && io.up.req.valid) {
     state := read_req_start
   } .elsewhen(state === read_req_start) {
-    io.mem.req.valid := true.B
+    io.down.req.valid := true.B
     state := read_req_done
   } .elsewhen (state === read_req_done) {
-    io.mem.res.ready := true.B
-    when(io.mem.res.valid) {
-      data := io.mem.res.bits.data.data
+    io.down.res.ready := true.B
+    when(io.down.res.valid) {
+      data := io.down.res.bits.data.data
       state := done
     }
   } .elsewhen (state === done) {
-    io.top.data_rd.valid := true.B
+    io.up.res.valid := true.B
     state := idle
   }
 }
@@ -59,18 +55,18 @@ class Reader()(implicit val p: Parameters) extends Module
 class RAMCoupledBlock()(implicit val p: Parameters) extends Module
   with SharedRAMParams {
   val io = IO(new Bundle{
-    val top = new TopIO()
+    val top = new BusSlaveBundle()
   })
 
   val ram = Module(new RAMBankIndexed()(p))
-  val node = Module(new Reader()(p))
+  val reader = Module(new Reader(1)(p))
 
-  io.top.addr <> node.io.top.addr
+  io.top.req <> reader.io.up.req
 
-  node.io.mem.req <> ram.io.req
+  reader.io.down.req <> ram.io.req
 
-  ram.io.res <> node.io.mem.res
+  ram.io.res <> reader.io.down.res
 
-  node.io.top.data_rd <> io.top.data_rd
+  reader.io.up.res <> io.top.res
 
 }

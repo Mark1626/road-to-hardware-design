@@ -10,8 +10,8 @@ class MultiThresholdScratchpad()(implicit val p: Parameters) extends Module
   with MultiThresholdParams {
 
   val io = IO(new Bundle {
-    val req = Flipped(Decoupled(Indexed(new MemReq(dataWidth, addrWidth), idx_w)))
-    val res = Decoupled(Indexed(new MemRes(dataWidth), idx_w))
+    val req = Flipped(Decoupled(Indexed(new BusReq(dataWidth, addrWidth), idx_w)))
+    val res = Decoupled(Indexed(new BusRes(dataWidth), idx_w))
   })
 
   val rambank = Module(new RAMBankIndexed())

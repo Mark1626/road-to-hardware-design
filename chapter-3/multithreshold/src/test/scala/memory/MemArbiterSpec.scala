@@ -28,7 +28,7 @@ class MemArbiterSpec extends AnyFreeSpec with ChiselScalatestTester {
       dut.clock.step()
     }
 
-    def currentReq(): (MemReq, UInt) = {
+    def currentReq(): (BusReq, UInt) = {
       (dut.io.req_out.bits.data, dut.io.req_out.bits.idx)
     }
 

@@ -23,17 +23,17 @@ class RAMCoupledBlockSpec extends AnyFreeSpec with ChiselScalatestTester {
 //        val ramHelper = new RAMBankSpecHelper(dut.ram)
 //        ramHelper.writeReq(100, 10)
 
-        while (dut.io.top.addr.ready.peek() == false.B) { dut.clock.step() }
+        while (dut.io.top.req.ready.peek() == false.B) { dut.clock.step() }
 
-        dut.io.top.addr.bits.poke(100.U)
-        dut.io.top.addr.valid.poke(true.B)
+        dut.io.top.req.bits.addr.poke(100.U)
+        dut.io.top.req.valid.poke(true.B)
         dut.clock.step()
 
-        dut.io.top.addr.valid.poke(false.B)
-        dut.io.top.data_rd.ready.poke(true.B)
+        dut.io.top.req.valid.poke(false.B)
+        dut.io.top.res.ready.poke(true.B)
         dut.clock.step()
 
-        while (dut.io.top.data_rd.valid.peek() == false.B) { dut.clock.step() }
+        while (dut.io.top.res.valid.peek() == false.B) { dut.clock.step() }
 
 //        dut.io.top.data.bits.expect(10.U)
       }
