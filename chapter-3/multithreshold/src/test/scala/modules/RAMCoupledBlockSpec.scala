@@ -30,10 +30,10 @@ class RAMCoupledBlockSpec extends AnyFreeSpec with ChiselScalatestTester {
         dut.clock.step()
 
         dut.io.top.addr.valid.poke(false.B)
-        dut.io.top.data.ready.poke(true.B)
+        dut.io.top.data_rd.ready.poke(true.B)
         dut.clock.step()
 
-        while (dut.io.top.data.valid.peek() == false.B) { dut.clock.step() }
+        while (dut.io.top.data_rd.valid.peek() == false.B) { dut.clock.step() }
 
 //        dut.io.top.data.bits.expect(10.U)
       }

@@ -7,7 +7,7 @@ import memory.{RAMBankIO, RAMBankIndexed, RAMBankParams, SharedRAMParams}
 
 class TopIO() extends Bundle {
   val addr = Flipped(Decoupled(UInt(32.W)))
-  val data = Decoupled(UInt(32.W))
+  val data_rd = Decoupled(UInt(32.W))
 }
 
 class ReaderIO()(implicit val p: Parameters) extends Bundle {
@@ -36,8 +36,8 @@ class Reader()(implicit val p: Parameters) extends Module
 
   io.top.addr.ready := state === idle
 
-  io.top.data.bits := data
-  io.top.data.valid := false.B
+  io.top.data_rd.bits := data
+  io.top.data_rd.valid := false.B
 
   when (state === idle && io.top.addr.valid) {
     state := read_req_start
@@ -51,7 +51,7 @@ class Reader()(implicit val p: Parameters) extends Module
       state := done
     }
   } .elsewhen (state === done) {
-    io.top.data.valid := true.B
+    io.top.data_rd.valid := true.B
     state := idle
   }
 }
@@ -71,6 +71,6 @@ class RAMCoupledBlock()(implicit val p: Parameters) extends Module
 
   ram.io.res <> node.io.mem.res
 
-  node.io.top.data <> io.top.data
+  node.io.top.data_rd <> io.top.data_rd
 
 }

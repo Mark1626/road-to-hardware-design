@@ -7,9 +7,7 @@ import chipsalliance.rocketchip.config.Parameters
 // Note: I'm not 100% the read is working correctly
 class WishboneRAM(val busWidth: Int = 32)(implicit val p: Parameters) extends Module
   with RAMBankParams {
-  val io = IO(new Bundle {
-    val bus = new WishboneSlave(busWidth)
-  })
+  val io = IO(new WishboneSlave(busWidth))
 
   val (read, write) = {
     val mem = SyncReadMem(ramSize, UInt(dataWidth.W))

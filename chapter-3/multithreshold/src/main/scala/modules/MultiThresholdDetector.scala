@@ -2,7 +2,6 @@ package modules
 
 import chisel3._
 import chisel3.util._
-import bus.WishboneSlave
 import chipsalliance.rocketchip.config.{Field, Parameters}
 import chisel3.experimental.FixedPoint
 import memory.{MemArbiter, RAMBankIndexed, RAMBankParams}
