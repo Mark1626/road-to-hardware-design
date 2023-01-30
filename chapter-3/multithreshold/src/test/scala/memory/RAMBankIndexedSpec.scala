@@ -69,6 +69,7 @@ class RAMBankIndexedSpec extends AnyFreeSpec with ChiselScalatestTester  {
     case DataWidth => 16
     case ReadBuffer => 8
     case NumberOfNodes => 10
+    case BusWidth => 32
   })
 
   def randInt(min: Int, max: Int): Int = {

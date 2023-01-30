@@ -11,6 +11,8 @@ case object ReadBuffer extends Field[Int]
 
 case object NumberOfNodes extends Field[Int]
 
+case object BusWidth extends Field[Int]
+
 class Indexed[+T <: Data](gen: T, w: Int) extends Bundle {
   val data = Output(gen)
   val idx = Output(UInt(w.W))
@@ -26,6 +28,13 @@ object Indexed {
   def apply[T <: Data](gen: T, w: Int): Indexed[T] = new Indexed(gen, w)
 }
 
+trait BusParams {
+  implicit val p: Parameters
+  val busWidth = p(BusWidth)
+  val nodes = p(NumberOfNodes)
+  val idx_w = log2Ceil(nodes)
+}
+
 trait RAMBankParams {
   implicit val p: Parameters
   val ramSize = p(RAMBlockSize)
@@ -35,33 +44,26 @@ trait RAMBankParams {
   val addrWidth = log2Ceil(ramSize)
 }
 
-trait SharedRAMParams extends RAMBankParams {
-  implicit val p: Parameters
-  val nodes = p(NumberOfNodes)
-  val idx_w = log2Ceil(nodes)
-}
-
-class BusReq(val dataWidth: Int, addrWidth: Int) extends Bundle {
-  val addr = UInt(addrWidth.W)
+class BusReq(val busWidth: Int) extends Bundle {
+  val addr = UInt(busWidth.W)
   val wrena = Bool()
-  val data = UInt(dataWidth.W)
+  val data = UInt(busWidth.W)
 }
 
-class BusRes(val w: Int) extends Bundle {
-  val data = UInt(w.W)
+class BusRes(val busWidth: Int) extends Bundle {
+  val data = UInt(busWidth.W)
 }
 
 class BusSlaveBundle()(implicit val p: Parameters) extends Bundle
-  with RAMBankParams {
-  val req = Flipped(Decoupled(new BusReq(dataWidth, addrWidth)))
-  val res = Decoupled(new BusRes(dataWidth))
+  with BusParams {
+  val req = Flipped(Decoupled(new BusReq(busWidth)))
+  val res = Decoupled(new BusRes(busWidth))
 }
 
 class IndexedBusSlaveBundle()(implicit val p: Parameters) extends Bundle
-  with RAMBankParams
-  with SharedRAMParams {
-  val req = Flipped(Decoupled(Indexed(new BusReq(dataWidth, addrWidth), idx_w)))
-  val res = Decoupled(Indexed(new BusRes(dataWidth), idx_w))
+  with BusParams {
+  val req = Flipped(Decoupled(Indexed(new BusReq(busWidth), idx_w)))
+  val res = Decoupled(Indexed(new BusRes(busWidth), idx_w))
 }
 
 /**
@@ -70,7 +72,7 @@ class IndexedBusSlaveBundle()(implicit val p: Parameters) extends Bundle
  */
 class RAMBankIndexed()(implicit val p: Parameters) extends Module
   with RAMBankParams
-  with SharedRAMParams {
+  with BusParams {
   val io = IO(new IndexedBusSlaveBundle()(p))
 
   val (read, write) = {
@@ -91,7 +93,7 @@ class RAMBankIndexed()(implicit val p: Parameters) extends Module
     write(addr, io.req.bits.data.data)
   }
 
-  val q = Module(new Queue(Indexed(new BusRes(dataWidth), idx_w), readBankSize))
+  val q = Module(new Queue(Indexed(new BusRes(busWidth), idx_w), readBankSize))
   q.io.enq.valid := RegNext(ren)
   q.io.enq.bits.data.data := rdata
   q.io.enq.bits.idx := curr_idx

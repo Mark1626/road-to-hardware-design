@@ -53,6 +53,7 @@ class WishboneRAMSpec extends AnyFreeSpec with ChiselScalatestTester {
     case RAMBlockSize => 1024
     case DataWidth => 32
     case ReadBuffer => 8
+    case BusWidth => 32
   })
 
   "Wishbone RAM waveform analysis" in {

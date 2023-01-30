@@ -8,11 +8,14 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 class MemArbiterSpec extends AnyFreeSpec with ChiselScalatestTester {
+  val n = 3
   val p: Parameters = new Config((site, here, up) => {
     case RAMBlockSize => 1024
     case DataWidth => 16
     case ReadBuffer => 8
     case ArbQueueDepth => 4
+    case BusWidth => 32
+    case NumberOfNodes => n
   })
 
   class Helper(dut: MemArbiter) {
@@ -40,8 +43,7 @@ class MemArbiterSpec extends AnyFreeSpec with ChiselScalatestTester {
   }
 
   "Memory arbiter waveform analysis" in {
-    val n = 3
-    test(new MemArbiter(n, log2Ceil(n))(p))
+    test(new MemArbiter(n)(p))
       .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
       val helper = new Helper(dut)
       helper.enqueueReadReq(100, 1)
