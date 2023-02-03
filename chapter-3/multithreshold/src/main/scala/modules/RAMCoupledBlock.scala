@@ -3,14 +3,14 @@ package modules
 import chipsalliance.rocketchip.config.Parameters
 import chisel3._
 import chisel3.util._
-import memory.{BusParams, BusSlaveBundle, IndexedBusSlaveBundle, RAMBankIndexed}
+import memory.{BusNodesParams, BusParams, BusReq, BusSlaveBundle, RAMBankIndexed}
 
 class ModuleBundle()(implicit val p: Parameters) extends Bundle {
-  val down = Flipped(new IndexedBusSlaveBundle()(p)) // Bus master
+  val down = Flipped(new BusSlaveBundle()(p)) // Bus master
   val up = new BusSlaveBundle()(p)
 }
 
-class Reader(val idx: Int)(implicit val p: Parameters) extends Module
+class Reader()(implicit val p: Parameters) extends Module
   with BusParams {
   val io = IO(new ModuleBundle())
 
@@ -21,11 +21,10 @@ class Reader(val idx: Int)(implicit val p: Parameters) extends Module
 
   // Downstream
   io.down.req.valid := false.B
-  io.down.req.bits.idx := idx.U(idx_w.W)
   // Read Request, data is DontCare, wrena is false
-  io.down.req.bits.data.data := DontCare
-  io.down.req.bits.data.wrena := false.B
-  io.down.req.bits.data.addr := io.up.req.bits.addr
+  io.down.req.bits.data := DontCare
+  io.down.req.bits.wrena := false.B
+  io.down.req.bits.addr := io.up.req.bits.addr
 
   io.down.res.ready := false.B
 
@@ -43,7 +42,7 @@ class Reader(val idx: Int)(implicit val p: Parameters) extends Module
   } .elsewhen (state === read_req_done) {
     io.down.res.ready := true.B
     when(io.down.res.valid) {
-      data := io.down.res.bits.data.data
+      data := io.down.res.bits.data
       state := done
     }
   } .elsewhen (state === done) {
@@ -52,7 +51,7 @@ class Reader(val idx: Int)(implicit val p: Parameters) extends Module
   }
 }
 
-class Writer(val idx: Int)(implicit val p: Parameters) extends Module
+class Writer()(implicit val p: Parameters) extends Module
   with BusParams {
   val io = IO(new ModuleBundle())
 
@@ -61,8 +60,7 @@ class Writer(val idx: Int)(implicit val p: Parameters) extends Module
 
   // Downstream
   io.down.req.valid := false.B
-  io.down.req.bits.idx := idx.U(idx_w.W)
-  io.down.req.bits.data := DontCare
+  io.down.req.bits := DontCare
 
   io.down.res.ready := false.B
 
@@ -72,9 +70,9 @@ class Writer(val idx: Int)(implicit val p: Parameters) extends Module
   io.up.res.valid := false.B
 
   when (state === idle && io.up.req.valid) {
-    io.down.req.bits.data.wrena := true.B
-    io.down.req.bits.data.addr := io.up.req.bits.addr
-    io.down.req.bits.data.data := io.up.req.bits.data
+    io.down.req.bits.wrena := true.B
+    io.down.req.bits.addr := io.up.req.bits.addr
+    io.down.req.bits.data := io.up.req.bits.data
     io.down.req.valid := true.B
 
     io.up.res.bits.data := io.up.req.bits.data
@@ -83,38 +81,91 @@ class Writer(val idx: Int)(implicit val p: Parameters) extends Module
 }
 
 class RAMCoupledBlock()(implicit val p: Parameters) extends Module
-  with BusParams {
+  with BusNodesParams {
   val io = IO(new Bundle{
     val top = new BusSlaveBundle()
   })
 
   val ram = Module(new RAMBankIndexed()(p))
-  val reader = Module(new Reader(1)(p))
-  val writer = Module(new Writer(2)(p))
+  val reader = Module(new Reader()(p))
+  val writer = Module(new Writer()(p))
 
-  val read = io.top.req.bits.addr(19, 16) === 0x0.U
+  val sel = io.top.req.bits.addr(19, 16)
 
-//  Mux(read, reader.io.up.req.valid, writer.io.up.req.valid) := io.top.req.valid
+  // Request: Top to Reader/Writer
+  reader.io.up.req.valid := io.top.req.valid && (sel === 0.U)
+  writer.io.up.req.valid := io.top.req.valid && (sel === 1.U)
 
-//  io.top.req <> Mux(read, reader.io.up.req, writer.io.up.req)
+  reader.io.up.req.bits.addr := io.top.req.bits.addr(15, 0)
+  writer.io.up.req.bits.addr := io.top.req.bits.addr(15, 0)
+
+  writer.io.up.req.bits.wrena := DontCare
+  reader.io.up.req.bits.wrena := DontCare
+
+  reader.io.up.req.bits.data := DontCare
+  writer.io.up.req.bits.data := io.top.req.bits.data
+
+  io.top.req.ready := Mux(sel === 0.U, reader.io.up.req.ready, writer.io.up.req.ready)
+
+  // Response: Reader/Writer to Top
+  reader.io.up.res.ready := io.top.res.ready && (sel === 0.U)
+  writer.io.up.res.ready := io.top.res.ready && (sel === 1.U)
+
+  reader.io.up.res.bits <> io.top.res.bits
+  writer.io.up.res.bits <> io.top.res.bits
+
+  io.top.res.valid := Mux(sel === 0.U, reader.io.up.res.valid, writer.io.up.res.valid)
+
+  // Test
+  ram.io.req.bits.data <> writer.io.down.req.bits
+  ram.io.req.bits.idx <> 0.U
+  writer.io.down.req.ready := ram.io.req.ready
+  ram.io.req.valid := writer.io.down.req.valid
+
+  writer.io.down.res.bits := ram.io.res.bits.data
+  ram.io.res.ready := writer.io.down.res.ready
+  writer.io.down.res.valid := ram.io.res.valid
+
+  reader.io.down.req.ready := DontCare
+
+  reader.io.down.res <> DontCare
+
+  // Request: Reader/Writer to Mem
+
+//  val arbiter = Module(new Arbiter(new BusReq(busWidth), 2))
 //
-//  ram.io.req <> Mux(read, reader.io.down.req, writer.io.down.req)
-//  ram.io.res <> Mux(read, reader.io.down.res, writer.io.down.res)
+//  arbiter.io.in(0) <> reader.io.down.req
+//  arbiter.io.in(1) <> writer.io.down.req
 //
-//  io.top.res <> Mux(read, reader.io.up.res, writer.io.down.res)
-
-  io.top.req <> reader.io.up.req
-
-  ram.io.req <> reader.io.down.req
-  ram.io.res <> reader.io.down.res
-
-  io.top.res <> reader.io.up.res
-
-  // Writer
-  writer.io.up.req <> io.top.req
-
-  writer.io.down.req <> ram.io.req
-  writer.io.down.res <> ram.io.res
-
-  writer.io.up.res <> io.top.res
+//  arbiter.io.out.ready := ram.io.req.ready
+//
+//  ram.io.req.bits.data <> arbiter.io.out.bits
+//  ram.io.req.bits.idx := arbiter.io.chosen
+//
+//  ram.io.req.valid := arbiter.io.out.valid
+//
+//  val res_sel = ram.io.res.bits.idx
+//
+//  reader.io.down.res.bits <> ram.io.res.bits.data
+//  writer.io.down.res.bits <> ram.io.res.bits.data
+//
+//  ram.io.res.ready := Mux(res_sel === 0.U, reader.io.down.res.ready, writer.io.down.res.ready)
+//
+//  reader.io.down.res.valid := ram.io.res.valid && (res_sel === 0.U)
+//  writer.io.down.res.valid := ram.io.res.valid && (res_sel === 1.U)
+//
+//  io.top.req <> reader.io.up.req
+//
+//  ram.io.req <> reader.io.down.req
+//  ram.io.res <> reader.io.down.res
+//
+//  io.top.res <> reader.io.up.res
+//
+//  // Writer
+//  writer.io.up.req <> io.top.req
+//
+//  writer.io.down.req <> ram.io.req
+//  writer.io.down.res <> ram.io.res
+//
+//  writer.io.up.res <> io.top.res
 }

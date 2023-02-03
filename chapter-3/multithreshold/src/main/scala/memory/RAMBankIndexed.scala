@@ -28,9 +28,15 @@ object Indexed {
   def apply[T <: Data](gen: T, w: Int): Indexed[T] = new Indexed(gen, w)
 }
 
+// TODO: Split this
+
 trait BusParams {
   implicit val p: Parameters
   val busWidth = p(BusWidth)
+}
+
+trait BusNodesParams extends BusParams {
+  implicit val p: Parameters
   val nodes = p(NumberOfNodes)
   val idx_w = log2Ceil(nodes)
 }
@@ -55,13 +61,13 @@ class BusRes(val busWidth: Int) extends Bundle {
 }
 
 class BusSlaveBundle()(implicit val p: Parameters) extends Bundle
-  with BusParams {
+  with BusNodesParams {
   val req = Flipped(Decoupled(new BusReq(busWidth)))
   val res = Decoupled(new BusRes(busWidth))
 }
 
 class IndexedBusSlaveBundle()(implicit val p: Parameters) extends Bundle
-  with BusParams {
+  with BusNodesParams {
   val req = Flipped(Decoupled(Indexed(new BusReq(busWidth), idx_w)))
   val res = Decoupled(Indexed(new BusRes(busWidth), idx_w))
 }
@@ -72,7 +78,7 @@ class IndexedBusSlaveBundle()(implicit val p: Parameters) extends Bundle
  */
 class RAMBankIndexed()(implicit val p: Parameters) extends Module
   with RAMBankParams
-  with BusParams {
+  with BusNodesParams {
   val io = IO(new IndexedBusSlaveBundle()(p))
 
   val (read, write) = {

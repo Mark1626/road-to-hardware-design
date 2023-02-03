@@ -10,11 +10,14 @@ import org.scalatest.matchers.should.Matchers
 
 class RAMCoupledBlockSpecHelper(dut: RAMCoupledBlock) {
   def writeReq(addr: Int, data: Int): Unit = {
+
+    val writeAddr = addr + (1 << 16)
+
     while (dut.io.top.req.ready.peek() == false.B) {
       dut.clock.step()
     }
 
-    dut.io.top.req.bits.addr.poke(addr.U)
+    dut.io.top.req.bits.addr.poke(writeAddr.U)
     dut.io.top.req.bits.data.poke(data.U)
     dut.io.top.req.bits.wrena.poke(true.B)
     dut.io.top.req.valid.poke(true.B)
@@ -24,7 +27,7 @@ class RAMCoupledBlockSpecHelper(dut: RAMCoupledBlock) {
     dut.clock.step()
   }
 
-  def readReq(addr: Int, idx: Int): UInt = {
+  def readReq(addr: Int): UInt = {
     while (dut.io.top.req.ready.peek() == false.B) {
       dut.clock.step()
     }
@@ -75,8 +78,7 @@ class RAMCoupledBlockSpec extends AnyFreeSpec with ChiselScalatestTester {
         helper.writeReq(100, 10)
         helper.writeReq(101, 11)
 
-//        while (dut.io.top.req.ready.peek() == false.B) { dut.clock.step() }
-
+        helper.readReq(100)//.expect(10)
 
       }
   }

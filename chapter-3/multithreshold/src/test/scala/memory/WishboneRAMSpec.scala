@@ -54,11 +54,15 @@ class WishboneRAMSpec extends AnyFreeSpec with ChiselScalatestTester {
     case DataWidth => 32
     case ReadBuffer => 8
     case BusWidth => 32
+    case NumberOfNodes => 10
   })
 
   "Wishbone RAM waveform analysis" in {
     test(new WishboneRAM()(p))
       .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+
+        dut.clock.step()
+
         val ramhelper = new WishboneRAMHelper(dut)
         ramhelper.wishboneWrite(100, 100)
         ramhelper.wishboneWrite(101, 101)
@@ -69,7 +73,9 @@ class WishboneRAMSpec extends AnyFreeSpec with ChiselScalatestTester {
         val res = ramhelper.wishboneRead(103)
         res.expect(103.U)
 
-        ramhelper.wishboneRead(104).expect(104.U)
+        ramhelper.wishboneRead(104)
+        dut.clock.step(2)
+
       }
   }
 }

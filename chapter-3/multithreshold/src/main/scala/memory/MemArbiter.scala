@@ -4,14 +4,14 @@ import chipsalliance.rocketchip.config.{Field, Parameters}
 import chisel3._
 import chisel3.util._
 
-class MemArbiterIO()(implicit val p: Parameters) extends Bundle with BusParams {
+class MemArbiterIO()(implicit val p: Parameters) extends Bundle with BusNodesParams {
   val req_in = Flipped(Decoupled(Indexed(new BusReq(busWidth), idx_w)))
   val req_out = Decoupled(Indexed(new BusReq(busWidth), idx_w))
 }
 
 case object ArbQueueDepth extends Field[Int]
 
-class MemArbiter(val max_streams: Int)(implicit val p: Parameters) extends Module with BusParams {
+class MemArbiter(val max_streams: Int)(implicit val p: Parameters) extends Module with BusNodesParams {
   val io = IO(new MemArbiterIO())
 
   val depth = p(ArbQueueDepth)
