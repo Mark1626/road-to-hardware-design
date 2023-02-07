@@ -74,12 +74,16 @@ class Tile(val n: Int)(implicit val p: Parameters) extends Module with BusParams
       }
     }
 
+    val reqEnd = RegNext(storage.io.bus.ack)
     // TODO: Verify this
-    when (storage.io.bus.ack) {
+    when (reqEnd) {
       storage.io.bus.stb := false.B
       storage.io.bus.cyc := false.B
     }
-    arbiter.io.out.ready := RegNext(storage.io.bus.ack)
+
+    // TODO: I'm partly skeptical about this, maybe storage.io.bus.cyc && storage.io.bus.ack
+    arbiter.io.out.ready := reqEnd
+//    arbiter.io.out.ready := RegNext(storage.io.bus.cyc)
   }
 
   // Upstream Output

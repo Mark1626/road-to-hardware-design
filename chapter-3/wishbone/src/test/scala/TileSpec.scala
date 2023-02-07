@@ -14,6 +14,7 @@ class TileSpec extends AnyFreeSpec with ChiselScalatestTester {
       .withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
 
       dut.io.res.ready.poke(false.B)
+      dut.clock.step()
 
       dut.io.addr.ready.expect(true.B)
       dut.io.addr.bits.poke(100.U)
@@ -29,7 +30,7 @@ class TileSpec extends AnyFreeSpec with ChiselScalatestTester {
         dut.clock.step()
       }
 
-      dut.io.res.bits.expect(800.U)
+      dut.io.res.bits.expect(600.U)
 
     }
   }
