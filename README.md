@@ -27,6 +27,7 @@ Open Source Verilog compiler https://github.com/steveicarus/iverilog
 ### Chisel
 
 1. https://github.com/chipsalliance/chisel3
+2. http://www.fabienm.eu/flf/hdl/chisel/
 
 -------------------------------------------------------------------------------------------
 
