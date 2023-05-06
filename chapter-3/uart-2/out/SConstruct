@@ -166,7 +166,7 @@ except IndexError:
 
 # -- Define the Sintesizing Builder
 synth = Builder(
-    action='yosys -p \"synth_ice40 -top UartEcho -json $TARGET\" {} $SOURCES'.format(
+    action='yosys -p \"synth_ice40 -top Top -json $TARGET\" {} $SOURCES'.format(
         '' if VERBOSE_ALL or VERBOSE_YOSYS else '-q'
     ),
     suffix='.json',
