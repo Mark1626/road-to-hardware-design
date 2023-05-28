@@ -4,7 +4,7 @@ In 2021 I started a repo to document my journey into HPC in [road-to-plus-plus](
 
 ## Chapters 
 
-- [Chapter 1](./chapter-1/): FPGA Basic Experiments in Verilog
+- [Chapter 1](./verilog/): FPGA Basic Experiments in Verilog
 
 
 -------------------------------------------------------------------------------------------

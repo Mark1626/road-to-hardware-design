@@ -1,6 +1,6 @@
 # read design
-read_verilog ../chapter-1/addsub/rtl/full_adder.v
-read_verilog ../chapter-1/addsub/rtl/half_adder.v
+read_verilog ../verilog/addsub/rtl/full_adder.v
+read_verilog ../verilog/addsub/rtl/half_adder.v
 
 # generic synthesis
 synth_ice40 -top full_adder

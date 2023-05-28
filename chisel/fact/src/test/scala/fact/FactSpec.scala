@@ -25,6 +25,15 @@ class FactSpec extends AnyFreeSpec with ChiselScalatestTester {
 
         dut.io.out.valid.expect(true.B)
         dut.io.out.bits.expect(120.U)
+
+        dut.clock.step(1)
+        dut.io.out.valid.expect(false.B)
+
+        dut.clock.step(1)
+        dut.io.in.bits.poke(7.U)
+        dut.io.in.valid.poke(true.B)
+
+        dut.clock.step(5)
     }
   }
 }
