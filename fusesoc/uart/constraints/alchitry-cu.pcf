@@ -1,0 +1,14 @@
+set_io clock P7
+set_io reset P8
+
+set_io io_led0 J11
+set_io io_led1 K11
+set_io io_led2 K12
+set_io io_led3 K14
+set_io io_led4 L12
+set_io io_led5 L14
+set_io io_led6 M12
+set_io io_led7 N14
+
+set_io io_rxd P14
+set_io io_txd M9

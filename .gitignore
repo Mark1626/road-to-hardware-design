@@ -12,6 +12,8 @@ project/target
 
 verilog-output
 
+build
+
 # verilog-output/**.v
 # verilog-output/**.json
 # verilog-output/*.dblite

@@ -1,0 +1,41 @@
+CAPI=2:
+
+name: mark:demo:uart:0
+description: A uart demo in Chisel targetting Alchitry Cu
+
+filesets:
+  base:
+    depend: ["fusesoc:utils:generators"]
+  alchitry-cu:
+    files:
+      - constraints/alchitry-cu.pcf: { file_type: PCF }
+      - constraints/alchitry-cu.sdc : {file_type : SDC}
+
+generate:
+
+  default-chisel:
+    generator: chisel
+    parameters: &baseparam
+      buildtool: sbt
+      chiselproject: Blinky
+      copy_core: true
+      output:
+        files:
+          - generated/TestHarness.v: { file_type: verilogSource }
+
+  alchitry-cu:
+    generator: chisel
+    parameters:
+      <<: *baseparam
+
+targets:
+  alchitry-cu:
+    default_tool: icestorm
+    description: Alchitry Cu
+    filesets: [base, alchitry-cu]
+    generate: [alchitry-cu]
+    tools:
+      icestorm:
+        nextpnr_options : [--hx8k, --package, "cb132"]
+        pnr: next
+    toplevel: TestHarness
