@@ -2,10 +2,6 @@ import chisel3._
 import chisel3.util._
 import chisel.lib.uart.{BufferedTx, Rx}
 
-class UartModule extends Module {
-
-}
-
 class TestHarness(
   val frequency: Int = 100000000,
   val baudRate: Int = 115200,
@@ -29,19 +25,28 @@ class TestHarness(
     val tx = Module(new BufferedTx(frequency, baudRate))
     val rx = Module(new Rx(frequency, baudRate))
 
-    io.led0 := true.B
-    io.led1 := false.B
-    io.led2 := false.B
-    io.led3 := false.B
-    io.led4 := false.B
-    io.led5 := false.B
-    io.led6 := false.B
-    io.led7 := false.B
+    val bits = RegInit(0.U(8.W))
 
-//    rx.io.channel.
+    io.led0 := bits(0)
+    io.led1 := bits(1)
+    io.led2 := bits(2)
+    io.led3 := bits(3)
+    io.led4 := bits(4)
+    io.led5 := bits(5)
+    io.led6 := bits(6)
+    io.led7 := bits(7)
 
     io.txd := tx.io.txd
     rx.io.rxd := io.rxd
+
+    val commandDecoder = Module(new CommandDecoder())
+
+    commandDecoder.io.in <> rx.io.channel
     tx.io.channel <> rx.io.channel
+    rx.io.channel.ready := tx.io.channel.ready && commandDecoder.io.in.ready
+
+    when(rx.io.channel.valid) {
+      bits := rx.io.channel.bits
+    }
   }
 }
