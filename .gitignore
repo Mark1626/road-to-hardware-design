@@ -14,6 +14,9 @@ verilog-output
 
 build
 
+*.conf
+fusesoc_libraries
+
 # verilog-output/**.v
 # verilog-output/**.json
 # verilog-output/*.dblite

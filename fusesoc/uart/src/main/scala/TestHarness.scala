@@ -39,11 +39,7 @@ class TestHarness(
     io.txd := tx.io.txd
     rx.io.rxd := io.rxd
 
-    val commandDecoder = Module(new CommandDecoder())
-
-    commandDecoder.io.in <> rx.io.channel
     tx.io.channel <> rx.io.channel
-    rx.io.channel.ready := tx.io.channel.ready && commandDecoder.io.in.ready
 
     when(rx.io.channel.valid) {
       bits := rx.io.channel.bits

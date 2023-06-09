@@ -1,0 +1,39 @@
+CAPI=2:
+
+name: mark:demo:print:0
+description: A print in using PandA Bambu HLS
+
+filesets:
+  base:
+    files:
+      - rtl/uart/baud_gen.v
+      - rtl/uart/uart_rx.v
+      - rtl/uart/uart_tx.v
+      - rtl/uart/uart_top.v
+      - rtl/test_harness.v
+      - rtl/pll.v
+      - rtl/sync_fifo.v
+      # Generated files
+      - bambu_getchar.v
+      - bambu_putchar.v
+      - top.v
+    file_type : verilogSource
+      
+  alchitry-cu:
+    files:
+      - constraints/alchitry-cu.pcf: { file_type: PCF }
+  # artya7-35t:
+  #   files:
+  #     - constraints/arty_a7.xdc: { file_type: xdc }
+
+
+targets:
+  alchitry-cu:
+    default_tool: icestorm
+    description: Alchitry Cu
+    filesets: [base, alchitry-cu]
+    tools:
+      icestorm:
+        nextpnr_options : [--hx8k, --package, "cb132"]
+        pnr: next
+    toplevel: test_harness
