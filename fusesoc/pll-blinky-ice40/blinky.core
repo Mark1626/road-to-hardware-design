@@ -1,6 +1,6 @@
 CAPI=2:
 
-name: mark:demo:blinky:0
+name: mark:demo:blinkypll:0
 description: A blinky demo in Chisel targetting Alchitry Cu
 
 filesets:
@@ -10,9 +10,6 @@ filesets:
     files:
       - constraints/alchitry-cu.pcf: { file_type: PCF }
       - src/main/resources/pll.v: { file_type: verilogSource }
-  artya7-35t:
-    files:
-      - constraints/arty_a7.xdc: { file_type: xdc }
 
 generate:
 
@@ -31,12 +28,6 @@ generate:
     parameters:
       <<: *baseparam
 
-  artya7-35t:
-    generator: chisel
-    parameters:
-      <<: *baseparam
-
-
 targets:
   alchitry-cu:
     default_tool: icestorm
@@ -48,13 +39,3 @@ targets:
         nextpnr_options : [--hx8k, --package, "cb132"]
         pnr: next
     toplevel: TestHarness
-
-  artya7-35t:
-    default_tool : vivado
-    description: Digilent ArtyA7-35T Board
-    filesets : [base, artya7-35t]
-    generate: [artya7-35t]
-    tools:
-      vivado:
-        part : xc7a35ticsg324-1L
-    toplevel : TestHarness

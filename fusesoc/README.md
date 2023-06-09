@@ -1,5 +1,11 @@
 # Fusesoc based projects
 
+## Examples
+
+1. Blinky: Simple blinky that works on Alchitry Cu and Arty A7 35T
+2. Uart: UART echo example, that also prints the ascii of the character received on LEDs
+3. PLL Blinky: PLL based blinky that uses the internal PLL in the ICE40 FPGA to reach desired frequency (Works only on ICE 40 based boards)
+
 ## Building and running
 
 To setup the project
