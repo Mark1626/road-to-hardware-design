@@ -1,6 +1,8 @@
 # Uart Print
 
-Hello World with Bambu HLS based on this [repo](https://github.com/cfib/bf2hw.git)
+Hello World with Bambu HLS.
+
+Some of the code is taken from this [repo](https://github.com/cfib/bf2hw.git), license is retained in those files. Credits to the original author.
 
 ## Build steps
 
