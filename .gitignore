@@ -17,6 +17,9 @@ build
 *.conf
 fusesoc_libraries
 
+HLS_output
+*.mem
+
 # verilog-output/**.v
 # verilog-output/**.json
 # verilog-output/*.dblite

@@ -1,5 +1,0 @@
-set_io clk12        P7
-set_io rstn         P8
-
-set_io SERIAL_RX    P14
-set_io SERIAL_TX    M9

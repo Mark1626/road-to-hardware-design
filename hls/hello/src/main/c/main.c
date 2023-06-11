@@ -8,6 +8,7 @@ inline void bambu_print(char *str, int len) {
 
 int main(void) {
     char str[] = "Hello World";
-    int len = sizeof(str) / sizeof(int);
+    int len = sizeof(str) / sizeof(char);
     bambu_print(str, len);
+    return 0;
 }
