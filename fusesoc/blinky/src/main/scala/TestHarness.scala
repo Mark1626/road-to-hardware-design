@@ -1,15 +1,6 @@
 import chisel3._
 import chisel3.util._
 
-class PLL40 extends BlackBox with HasBlackBoxResource {
-    val io = IO(new Bundle {
-        val clock_in = Input(Clock())
-        val clock_out = Output(Clock())
-        val locked = Output(UInt(1.W))
-    })
-    addResource("/pll.v")
-}
-
 class TestHarness(val invReset: Boolean = true) extends Module {
     val io = IO(new Bundle {
         val led0 = Output(Bool())
@@ -18,14 +9,9 @@ class TestHarness(val invReset: Boolean = true) extends Module {
         val led3 = Output(Bool())   
     })
 
-    val pll_clock = Wire(Clock())
-    val pll = Module(new PLL40())
-    pll.io.clock_in := clock
-    pll_clock := pll.io.clock_out
-
     val customReset = if (invReset) ~reset.asBool() else reset
 
-    withClockAndReset (pll_clock, customReset) {
+    withClockAndReset (clock, customReset) {
         val module = Module(new Blinky(25000000))
         module.io <> io
     }

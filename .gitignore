@@ -9,6 +9,7 @@ constraint
 
 target
 project/target
+generated
 
 verilog-output
 
