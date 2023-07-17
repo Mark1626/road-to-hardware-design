@@ -2,3 +2,7 @@ build
 *.csv
 __pycache__
 *.log
+
+*.o
+*.d
+
