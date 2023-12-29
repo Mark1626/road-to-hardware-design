@@ -1,4 +1,4 @@
-# Chapter - 4 Synthesis
+# Synthesis
 
 This chapter is to understand synthesis
 

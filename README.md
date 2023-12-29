@@ -5,7 +5,14 @@ In 2021 I started a repo to document my journey into HPC in [road-to-plus-plus](
 ## Chapters 
 
 - [Chapter 1](./verilog/): FPGA Basic Experiments in Verilog
+- [Chisel](./chisel/): Basic experiments with Chisel
+- 
 
+## Experiements
+
+- [Synthesis](./synthesis/) Experiment with synthesis with Yosys
+- [Fusesoc](./fusesoc/) Experiments with fusesoc
+- [High Level Synthesis](./hls/) Experiments with High Level Synthesis
 
 -------------------------------------------------------------------------------------------
 

@@ -56,7 +56,7 @@ trait HasUartIO extends Module {
   } else {
     // This is a work around for the Blackbox UART
     val rst = RegInit(false.B)
-    rst := reset
+    rst := reset.asBool
     uart_rx_m.io.rstn := ~rst
     uart_tx_m.io.rstn := ~rst
   }

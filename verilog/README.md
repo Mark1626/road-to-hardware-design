@@ -1,7 +1,7 @@
 # Chapter 1: FPGA Basic Experiments in Verilog
 
 1. **hello** Basic hello `iverilog`
-2. **counter** 8 bit counter
+2. **counter** 8 bit counter, with formal verification
 3. **Adder** Ripple adder
 4. **Adder/Subtractor** Ripple adder/subtractor
 5. **Thruwire** Simple throughwire with verilator simulation
